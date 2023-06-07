@@ -4,6 +4,10 @@ const plusBtn = document.getElementById('plus')
 const minusBtn = document.getElementById('minus')
 const plusFiveBtn = document.getElementById('plus-five')
 const minusFiveBtn = document.getElementById('minus-five')
+const incrementOdd = document.getElementById('increment-odd')
+const incrementAsync = document.getElementById('increment-async')
+const incrementCustomBtn = document.getElementById('increment-custom-btn')
+const customValueInput = document.getElementById('custom-value-input')
 
 // initial state value
 const initialState = {
@@ -22,6 +26,9 @@ const counterReducer = (state = initialState, action) => {
             return { value: state.value + 5 }
         case 'counter/decrementedFive':
             return { value: state.value - 5 }
+        
+        case 'counter/custom':
+            return { value: state.value + action.payload }
         default:
         return state
     }
@@ -70,11 +77,30 @@ const subFive = () => {
   store.dispatch(subFiveAction)
 }
 
+const incrementIfOdd = () => {
+  if (store.getState().value % 2 !== 0 ){
+    store.dispatch(addAction)
+  }
+}
+
+const incrementToAsync = () => {
+  setTimeout(() => {
+    store.dispatch(addAction)
+  }, 1000)
+}
+
+const changeCustom = () => {
+  store.dispatch({ type: 'counter/custom', payload: Number(customValueInput.value) })
+}
+
 // event listeners
 plusBtn.addEventListener('click', addOne)
 minusBtn.addEventListener('click', subOne)
 plusFiveBtn.addEventListener('click',addFive)
 minusFiveBtn.addEventListener('click',subFive)
+incrementOdd.addEventListener('click', incrementIfOdd)
+incrementAsync.addEventListener('click', incrementToAsync)
+incrementCustomBtn.addEventListener('click', changeCustom )
 
 // initial render
 render()
